@@ -8,13 +8,11 @@ import seaborn as sns
 import networkx as nx
 import numpy as np
 
-CENTRALITIES = [#lambda x: nx.information_centrality(x, weight='weight', solver='lu'),
-                nx.degree_centrality,
+CENTRALITIES = [nx.degree_centrality,
                 lambda x: nx.load_centrality(x, weight='1/weight',normalized=True),#https://stackoverflow.com/questions/50497186/networkx-meaning-of-weight-in-betwenness-and-current-flow-betweenness
                 lambda x: nx.eigenvector_centrality(x, max_iter=500000, weight='weight'),
                 lambda x: nx.closeness_centrality(x, distance='1/weight', wf_improved=True),
                 lambda x: nx.betweenness_centrality(x, weight='1/weight',normalized=True),#https://stackoverflow.com/questions/50497186/networkx-meaning-of-weight-in-betwenness-and-current-flow-betweenness
-                #lambda x: nx.current_flow_betweenness_centrality(x, weight='weight', normalized=True, solver='full'),
                 nx.communicability_betweenness_centrality,
                 lambda x: nx.harmonic_centrality(x, distance='1/weight')]
 
@@ -58,15 +56,12 @@ def played_not_x_games(x, windows):
 
 
 def plot_centralities_hist(centralities_dict, activos=True):
-    #centralities_dict=centrality_per_player
     windows_per_player = pickle.load(open('../3-results/ttt-experience-evolution-windows-per-player.pickle', 'rb'))
     centrality_groups = {}
-    for centrality in CENTRALITY_NAMES:#centrality='degree-centrality'
+    for centrality in CENTRALITY_NAMES:
         cent_means = []
-        #user_values = [ [user, user_cent_values] for user, user_cent_values in centralities_dict[centrality].items() ]
-        for user, user_cent_values in centralities_dict[centrality].items(): #user, user_cent_values = user_values[0]
+        for user, user_cent_values in centralities_dict[centrality].items():
             if activos and played_x_games(150, windows_per_player[user]):
-                #sum([len(window) for window in windows_per_player[user]])
                 played_50_games, windows_until_50_games = get_number_of_windows_until_50_games(windows_per_player[user])
                 if played_50_games:
                     median = np.median(user_cent_values[:windows_until_50_games])
@@ -84,7 +79,6 @@ def plot_centralities_hist(centralities_dict, activos=True):
         else:
             bins = np.arange(max(min(cent_means),0.00001), max(cent_means), (max(cent_means)-max(min(cent_means),0.00001))/100 )
         
-        #print(min(cent_means), max(cent_means), centrality)
         centrality_groups[centrality] = [(np.percentile(cent_means, 2)),(np.percentile(cent_means, 40)), (np.percentile(cent_means, 60)),(np.percentile(cent_means, 98)), max(cent_means)]
 
         sns.set(rc={

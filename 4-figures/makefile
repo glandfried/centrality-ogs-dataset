@@ -7,7 +7,7 @@ initialTTTHistogram: ../3-results/results.zip
 	python3 InitialTTTHistogram.py
 
 centralities: ../3-results/results.zip
-	python3 CentralityCategorizationInitialTTT.py
+	python3 Centralities.py --enddate --graph-only
 
 learningCurves: ../3-results/results.zip
 	python3 CentralityCategorizationInitialTTT.py --ttt-inicial-low
