@@ -1,0 +1,4 @@
+networkx==3.1
+scipy==1.10.1
+seaborn==0.12.2
+
