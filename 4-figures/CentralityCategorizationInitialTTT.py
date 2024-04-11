@@ -175,7 +175,7 @@ def main():
             overall_mean_skill = np.mean(mean)
             print("Centrality: {}, centrality band: {}, Overall mean skill: {}".format(centrality, cent_band,overall_mean_skill))
 
-            exp_skill_ax.plot(game_numbers, mean, label="{} centrality ({} jug.)".format(cent_band, len(player_set)))
+            exp_skill_ax.plot(game_numbers, mean, label="{} centrality ({} ind.)".format(cent_band, len(player_set)))
             exp_skill_ax.fill_between(game_numbers, mean - 2*stde, mean + 2*stde, alpha=0.2)
 
         exp_skill_ax.set_ylim([min_skill, max_skill])
